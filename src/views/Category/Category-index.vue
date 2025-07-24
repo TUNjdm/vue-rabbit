@@ -1,48 +1,9 @@
 <script setup>
-import { getTopCategoryAPI } from '@/apis/category'
-import { onMounted, ref, watch } from 'vue'
-import { useRoute } from 'vue-router'
-import { getBannerAPI } from '@/apis/home'
 import GoodsItem from '@/views/Home/components/GoodsItem.vue'
-
-// 获取数据
-const categoryData = ref({})
-const route = useRoute()
-
-const getCategory = async () => {
-  try {
-    const res = await getTopCategoryAPI(route.params.id)
-    categoryData.value = res.result
-  } catch (error) {
-    console.error('获取分类数据失败:', error)
-  }
-}
-
-// 监听路由参数 id 的变化
-watch(
-  () => route.params.id,
-  () => {
-    getCategory()  // 当 id 变化时重新获取数据
-  }
-)
-
-const bannerList = ref([])
-const getBanner = async () => {
-  try {
-    const res = await getBannerAPI({
-      distributionSite: '2'
-    })
-    bannerList.value = res.result
-  } catch (error) {
-    console.error('获取轮播图数据失败:', error)
-  }
-}
-
-// 合并 onMounted 调用
-onMounted(() => {
-  getBanner()
-  getCategory()
-})
+import {useBanner} from '@/views/Category/composables/useBanner'
+import { useCategory } from '@/views/Category/composables/useCategory'
+const {bannerList} = useBanner()
+const {categoryData} = useCategory()
 </script>
 
 <template>

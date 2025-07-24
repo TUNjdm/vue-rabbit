@@ -7,8 +7,7 @@
 </script>
 
 <template>
-  <div class="app-header-sticky" :class="{show:y>100}">
-    {{y}}
+  <div class="app-header-sticky" :class="{show:y>92}">
     <div class="container">
       <RouterLink class="logo" to="/" />
       <!-- 导航区域 -->
