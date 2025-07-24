@@ -3,6 +3,7 @@ import LoginIndex from '@/views/Login/Login-index.vue'
 import LayoutIndex from '@/views/Layout/Layout-index.vue'
 import HomeIndex from '@/views/Home/Home-index.vue'
 import CategoryIndex from '@/views/Category/Category-index.vue'
+import SubCategory from '@/views/SubCategory/SubCategory-index.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -20,6 +21,12 @@ const router = createRouter({
           path:'category/:id',
           name:'category',
           component:CategoryIndex
+        }
+        ,
+        {
+          path:'category/sub/:id',
+          name:'subCategory',
+          component:SubCategory
         }
       ]
     },
