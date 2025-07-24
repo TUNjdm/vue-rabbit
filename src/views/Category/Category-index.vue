@@ -3,31 +3,44 @@ import { getTopCategoryAPI } from '@/apis/category'
 import { onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { getBannerAPI } from '@/apis/home'
+import GoodsItem from '@/views/Home/components/GoodsItem.vue'
+
 // 获取数据
 const categoryData = ref({})
 const route = useRoute()
+
 const getCategory = async () => {
-  const res = await getTopCategoryAPI(route.params.id)
-  categoryData.value = res.result
+  try {
+    const res = await getTopCategoryAPI(route.params.id)
+    categoryData.value = res.result
+  } catch (error) {
+    console.error('获取分类数据失败:', error)
+  }
 }
+
+// 监听路由参数 id 的变化
 watch(
-  () => route.params.id,  // 监听路由参数 id 的变化
+  () => route.params.id,
   () => {
     getCategory()  // 当 id 变化时重新获取数据
   }
 )
+
 const bannerList = ref([])
 const getBanner = async () => {
-  const res = await getBannerAPI({
-    distributionSite: '2'
-  })
-  console.log(res)
-  bannerList.value = res.result
+  try {
+    const res = await getBannerAPI({
+      distributionSite: '2'
+    })
+    bannerList.value = res.result
+  } catch (error) {
+    console.error('获取轮播图数据失败:', error)
+  }
 }
+
+// 合并 onMounted 调用
 onMounted(() => {
   getBanner()
-})
-onMounted(() => {
   getCategory()
 })
 </script>
@@ -39,7 +52,7 @@ onMounted(() => {
       <div class="bread-container">
         <el-breadcrumb separator=">">
           <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-          <el-breadcrumb-item>{{ categoryData.name }}</el-breadcrumb-item>
+          <el-breadcrumb-item>{{ categoryData.name || '' }}</el-breadcrumb-item>
         </el-breadcrumb>
       </div>
       <!-- 轮播图 -->
@@ -50,9 +63,31 @@ onMounted(() => {
           </el-carousel-item>
         </el-carousel>
       </div>
+      <!-- 只有当数据存在时才渲染分类列表 -->
+      <div class="sub-list" v-if="categoryData.children">
+        <h3>全部分类</h3>
+        <ul>
+          <li v-for="i in categoryData.children" :key="i.id">
+            <RouterLink to="/">
+              <img :src="i.picture" />
+              <p>{{ i.name }}</p>
+            </RouterLink>
+          </li>
+        </ul>
+      </div>
+      <!-- 只有当数据存在时才渲染商品列表 -->
+      <div class="ref-goods" v-for="item in categoryData.children" :key="item.id">
+        <div class="head">
+          <h3>- {{ item.name }}-</h3>
+        </div>
+        <div class="body">
+          <GoodsItem v-for="good in item.goods" :good="good" :key="good.id" />
+        </div>
+      </div>
     </div>
   </div>
 </template>
+
 <style scoped lang="scss">
 .top-category {
   h3 {
@@ -75,7 +110,6 @@ onMounted(() => {
       li {
         width: 168px;
         height: 160px;
-
 
         a {
           text-align: center;
@@ -131,6 +165,7 @@ onMounted(() => {
     padding: 25px 0;
   }
 }
+
 .home-banner {
   width: 1240px;
   height: 500px;
