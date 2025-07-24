@@ -17,7 +17,7 @@ const router = createRouter({
           component:HomeIndex
         },
         {
-          path:'category',
+          path:'category/:id',
           name:'category',
           component:CategoryIndex
         }
