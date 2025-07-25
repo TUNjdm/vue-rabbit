@@ -1,6 +1,10 @@
 <script setup>
 // 表单校验(账号名密码)
 import { ref } from 'vue'
+import { loginAPI } from '@/apis/user'
+import { ElMessage } from 'element-plus'
+import 'element-plus/theme-chalk/el-message.css'
+import { useRouter } from 'vue-router'
 const form = ref({
   account: '',
   password: '',
@@ -10,7 +14,7 @@ const form = ref({
 const rules = {
   account: [
     { required: true, message: '请输入账号', trigger: 'blur' },
-    { min: 3, max: 10, message: '长度在 3 到 10 个字符', trigger: 'blur' }
+    { min: 3, max: 14, message: '长度在 3 到 14 个字符', trigger: 'blur' }
   ],
   password: [
     { required: true, message: '请输入密码', trigger: 'blur' },
@@ -32,18 +36,21 @@ const rules = {
 }
 // 获取from实例做统一校验
 const formRef = ref(null)
+const router = useRouter()
 const doLogin = ()=>{
+  const { account, password } = form.value
   formRef.value.validate(async (valid) => {
     if (valid) {
       // 登录
-      const res = await loginAPI(formData)
-      // 存储token
-      localStorage.setItem('token', res.data.token)
-      // 跳转
-      router.push('/')
-    } else {
+      const res = await loginAPI({account, password})
+      console.log(res)
       // 提示用户
-      ElMessage.error('请填写正确的用户信息')
+      ElMessage({
+        message: '登录成功',
+        type: 'success'
+      })
+      // 跳转页面
+      router.replace('/')
     }
   })
 }
