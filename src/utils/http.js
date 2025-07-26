@@ -2,12 +2,20 @@ import axios from 'axios'
 // 显示服务器返回消息
 import { ElMessage } from 'element-plus'
 import 'element-plus/theme-chalk/el-message.css'
+import { useUserStore } from '@/stores/user'
 const httpInstance = axios.create({
   baseURL: 'http://pcapi-xiaotuxian-front-devtest.itheima.net',
   timeout: 5000,
 })
 // axios请求拦截器
 httpInstance.interceptors.request.use(config => {
+  // pinia中获取token数据
+  const userStore = useUserStore()
+  const token = userStore.userInfo.token
+  // 按照后端要求拼接token数据
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`
+  }
   return config
 }, e => Promise.reject(e))
 
