@@ -1,6 +1,7 @@
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
 import App from './App.vue'
 import router from './router'
 
@@ -11,8 +12,11 @@ import { lazyPlugin } from '@/directives'
 // 引入全局组件插件
 import { componentsPlugin } from '@/components/components-index'
 const app = createApp(App)
+const pinia = createPinia();
+pinia.use(piniaPluginPersistedstate);
 app.use(createPinia())
 app.use(router)
 app.use(lazyPlugin)
 app.use(componentsPlugin)
+app.use(pinia)
 app.mount('#app')
