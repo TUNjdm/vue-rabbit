@@ -1,15 +1,15 @@
 <script setup>
-import {getDetail} from '@/apis/detail'
-import {onMounted, ref} from 'vue'
-import {useRoute} from 'vue-router'
+import { getDetail } from '@/apis/detail'
+import { onMounted, ref } from 'vue'
+import { useRoute } from 'vue-router'
 import DetailHot from '@/views/Detail/components/DetailHot.vue'
 import { ElMessage } from 'element-plus'
-import {useCartStore} from '@/stores/cartStore'
+import { useCartStore } from '@/stores/cartStore'
 const cartStore = useCartStore()
 const goods = ref([])
 const route = useRoute()
 const getGoods = async () => {
-  const res =   await getDetail(route.params.id)
+  const res = await getDetail(route.params.id)
   goods.value = res.result
 }
 onMounted(() => {
@@ -27,25 +27,25 @@ const count = ref(1)
 const countChange = (count) => {
   console.log(count);
 }
-  // 3. 添加购物车
-  const addCart = ()=>{
-    if(skuObj.skuId){
-      // 有sku
-      cartStore.addCart({
-        id:goods.value.id,
-        name:goods.value.name,
-        picture:goods.value.mainPictures[0],
-        price:goods.value.price,
-        count:count.value,
-        skuId:skuObj.skuId,
-        attrsText:skuObj.specsText,
-        selected:true
-      })
-    }else{
-      // 无sku
-      ElMessage.warning('请选择规格')
-    }
+// 3. 添加购物车
+const addCart = () => {
+  if (skuObj.skuId) {
+    // 有sku
+    cartStore.addCart({
+      id: goods.value.id,
+      name: goods.value.name,
+      picture: goods.value.mainPictures[0],
+      price: goods.value.price,
+      count: count.value,
+      skuId: skuObj.skuId,
+      attrsText: skuObj.specsText,
+      selected: true
+    })
+  } else {
+    // 无sku
+    ElMessage.warning('请选择规格')
   }
+}
 </script>
 
 <template>
@@ -55,11 +55,12 @@ const countChange = (count) => {
         <el-breadcrumb separator=">">
           <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
           <!-- goods一开始是空对象，得到undefined，所以goods.categories[1]报错 -->
-          <el-breadcrumb-item :to="{ path: `/category/${goods.categories?.[1].id}` }">{{goods.categories?.[1].name}}
+          <el-breadcrumb-item :to="{ path: `/category/${goods.categories?.[1].id}` }">{{ goods.categories?.[1].name }}
           </el-breadcrumb-item>
-          <el-breadcrumb-item :to="{ path: `/category/sub/${goods.categories?.[0].id}` }">{{ goods.categories?.[0].name }}
+          <el-breadcrumb-item :to="{ path: `/category/sub/${goods.categories?.[0].id}` }">{{ goods.categories?.[0].name
+            }}
           </el-breadcrumb-item>
-          <el-breadcrumb-item>{{goods.name}}</el-breadcrumb-item>
+          <el-breadcrumb-item>{{ goods.name }}</el-breadcrumb-item>
         </el-breadcrumb>
       </div>
       <!-- 商品信息 -->
@@ -68,26 +69,26 @@ const countChange = (count) => {
           <div class="goods-info">
             <div class="media">
               <!-- 图片预览区 -->
-              <ImageView :image-list="goods.mainPictures"/>
+              <ImageView :image-list="goods.mainPictures" />
               <!-- 统计数量 -->
               <ul class="goods-sales">
                 <li>
                   <p>销量人气</p>
-                  <p> {{goods.salesCont}} </p>
+                  <p> {{ goods.salesCont }} </p>
                   <p><i class="iconfont icon-task-filling"></i>销量人气</p>
                 </li>
                 <li>
                   <p>商品评价</p>
-                  <p>{{goods.commentCount}}</p>
+                  <p>{{ goods.commentCount }}</p>
                   <p><i class="iconfont icon-comment-filling"></i>查看评价</p>
                 </li>
                 <li>
                   <p>收藏人气</p>
-                  <p>{{goods.collectCount}}</p>
+                  <p>{{ goods.collectCount }}</p>
                   <p><i class="iconfont icon-favorite-filling"></i>收藏商品</p>
                 </li>
                 <li>
-                  <p>{{goods.brand.name}}</p>
+                  <p>{{ goods.brand?.name }}</p>
                   <p>400+</p>
                   <p><i class="iconfont icon-dynamic-filling"></i>品牌主页</p>
                 </li>
@@ -95,11 +96,11 @@ const countChange = (count) => {
             </div>
             <div class="spec">
               <!-- 商品信息区 -->
-              <p class="g-name"> {{goods.name}} </p>
-              <p class="g-desc">{{goods.desc}} </p>
+              <p class="g-name"> {{ goods.name }} </p>
+              <p class="g-desc">{{ goods.desc }} </p>
               <p class="g-price">
-                <span>{{goods.oldPrice}}</span>
-                <span> {{goods.price}}</span>
+                <span>{{ goods.oldPrice }}</span>
+                <span> {{ goods.price }}</span>
               </p>
               <div class="g-service">
                 <dl>
@@ -131,7 +132,7 @@ const countChange = (count) => {
           </div>
           <div class="goods-footer">
             <div class="goods-article">
-             s<!-- 商品详情 -->
+              s<!-- 商品详情 -->
               <div class="goods-tabs">
                 <nav>
                   <a>商品详情</a>
