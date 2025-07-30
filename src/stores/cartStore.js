@@ -45,7 +45,10 @@ const checkAll = (selected)=>{
   // 计算属性
   const allCount = computed(() => cartList.value.reduce((a, c) => a + c.count, 0))
   const allPrice = computed(() => cartList.value.reduce((a, c) => a + c.count * c.price, 0))
-
+  // 计算选中的商品数量
+  const selectedCount = computed(() => cartList.value.filter(item => item.selected).reduce((a, c) => a + c.count, 0))
+  // 计算选中的商品总价
+  const selectedPrice = computed(() => cartList.value.filter(item => item.selected).reduce((a, c) => a + c.count * c.price, 0))
   // 是否全选
   const isAll = computed(() => cartList.value.every(item => item.selected))
   return {
@@ -56,7 +59,9 @@ const checkAll = (selected)=>{
     allCount,
     allPrice,
     singleCheck,
-    checkAll
+    checkAll,
+    selectedCount,
+    selectedPrice
   }
 }, {
   persist: true

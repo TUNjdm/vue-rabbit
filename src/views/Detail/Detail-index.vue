@@ -88,7 +88,7 @@ const addCart = () => {
                   <p><i class="iconfont icon-favorite-filling"></i>收藏商品</p>
                 </li>
                 <li>
-                  <p>{{ goods.brand?.name }}</p>
+                  <p>{{ goods.brand.name }}</p>
                   <p>400+</p>
                   <p><i class="iconfont icon-dynamic-filling"></i>品牌主页</p>
                 </li>
