@@ -4,6 +4,11 @@ const cartStore = useCartStore()
 // 单选回调
 const singleCheck = (i,selected)=>{
   cartStore.singleCheck(i.skuId,selected)
+
+}
+// 全选回调
+const checkAll = (selected)=>{
+  cartStore.checkAll(selected)
 }
 </script>
 
@@ -15,7 +20,7 @@ const singleCheck = (i,selected)=>{
           <thead>
             <tr>
               <th width="120">
-                <el-checkbox/>
+                <el-checkbox :model-value="cartStore.isAll" @change="checkAll"/>
               </th>
               <th width="400">商品信息</th>
               <th width="220">单价</th>
