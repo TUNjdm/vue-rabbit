@@ -1,8 +1,8 @@
 // src/stores/cartStore.js
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
-import { useUserStore } from '@/stores/user'
-import { insertCartAPI, findNewCartListAPI } from '@/apis/cart'
+import { useUserStore } from '@/stores/userStore'
+import { insertCartAPI, findNewCartListAPI, delCartAPI } from '@/apis/cart'
 export const useCartStore = defineStore('cart', () => {
   // 定义state - cartList
   const cartList = ref([])
@@ -13,9 +13,8 @@ export const useCartStore = defineStore('cart', () => {
     const { skuId, count } = goods
     if (isLogin.value) {
       // 登录之后购物车逻辑
-      await insertCartAPI({skuId,count})
-      const res = await findNewCartListAPI()
-      cartList.value = res.result
+      await insertCartAPI({ skuId, count })
+      apdateNewList()
     } else {
       const item = cartList.value.find(item => item.skuId === goods.skuId)
       if (item) {
@@ -33,15 +32,28 @@ export const useCartStore = defineStore('cart', () => {
   // 通过匹配传递过来的商品对象中的skuId能不能在cartList中找到
 
   // 修改后的删除函数
-  const delCart = (skuId) => {
+  const delCart = async (skuId) => {
     // 删除购物车操作
-    // 通过匹配传递过来的商品对象中的skuId能不能在cartList中找到
-    const itemIndex = cartList.value.findIndex(item => item.skuId === skuId)
-    // findIndex 返回 -1 表示没找到，返回 >=0 表示找到了对应元素的索引
-    if (itemIndex !== -1) {
-      // 找到了才执行删除操作
-      cartList.value.splice(itemIndex, 1)
+
+    if (isLogin.value) {
+      // 登录之后购物车逻辑
+      await delCartAPI([skuId])
+      apdateNewList()
+    } else {
+      // 未登录购物车逻辑
+      // 通过匹配传递过来的商品对象中的skuId能不能在cartList中找到
+      const itemIndex = cartList.value.findIndex(item => item.skuId === skuId)
+      // findIndex 返回 -1 表示没找到，返回 >=0 表示找到了对应元素的索引
+      if (itemIndex !== -1) {
+        // 找到了才执行删除操作
+        cartList.value.splice(itemIndex, 1)
+      }
     }
+  }
+  // 获取最新购物车列表action
+  const apdateNewList = async () => {
+    const res = await findNewCartListAPI()
+    cartList.value = res.result
   }
   // 单选功能
   const singleCheck = (skuId, selected) => {
