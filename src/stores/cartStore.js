@@ -14,7 +14,7 @@ export const useCartStore = defineStore('cart', () => {
     if (isLogin.value) {
       // 登录之后购物车逻辑
       await insertCartAPI({ skuId, count })
-      apdateNewList()
+      updateNewList()
     } else {
       const item = cartList.value.find(item => item.skuId === goods.skuId)
       if (item) {
@@ -38,7 +38,7 @@ export const useCartStore = defineStore('cart', () => {
     if (isLogin.value) {
       // 登录之后购物车逻辑
       await delCartAPI([skuId])
-      apdateNewList()
+      updateNewList()
     } else {
       // 未登录购物车逻辑
       // 通过匹配传递过来的商品对象中的skuId能不能在cartList中找到
@@ -55,7 +55,7 @@ export const useCartStore = defineStore('cart', () => {
     cartList.value = []
   }
   // 获取最新购物车列表action
-  const apdateNewList = async () => {
+  const updateNewList = async () => {
     const res = await findNewCartListAPI()
     cartList.value = res.result
   }
@@ -88,7 +88,8 @@ export const useCartStore = defineStore('cart', () => {
     checkAll,
     selectedCount,
     selectedPrice,
-    clearCart
+    clearCart,
+    updateNewList
   }
 }, {
   persist: true
