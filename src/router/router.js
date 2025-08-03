@@ -7,46 +7,52 @@ import SubCategory from '@/views/SubCategory/SubCategory-index.vue'
 import Detail from '@/views/Detail/Detail-index.vue'
 import CartList from '@/views/CartList/CartList-index.vue'
 import Checkout from '@/views/CheckOut/CheckOut-index.vue'
+import PayIndex from '@/views/pay/Pay-index.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
-        {
+    {
       path: '/',
       name: 'layout',
       component: LayoutIndex,
-      children:[
+      children: [
         {
-          path:'',
-          name:'home',
-          component:HomeIndex
+          path: '',
+          name: 'home',
+          component: HomeIndex
         },
         {
-          path:'category/:id',
-          name:'category',
-          component:CategoryIndex
+          path: 'category/:id',
+          name: 'category',
+          component: CategoryIndex
         }
         ,
         {
-          path:'category/sub/:id',
-          name:'subCategory',
-          component:SubCategory
+          path: 'category/sub/:id',
+          name: 'subCategory',
+          component: SubCategory
         },
         {
-          path:'detail/:id',
-          name:'detail',
-          component:Detail
+          path: 'detail/:id',
+          name: 'detail',
+          component: Detail
         },
         {
-          path:'CartList',
-          name:'CartList',
-          component:CartList
+          path: 'CartList',
+          name: 'CartList',
+          component: CartList
         }
         ,
         {
-          path:'checkout',
-          name:'checkout',
-          component:Checkout
-        }
+          path: 'checkout',
+          name: 'checkout',
+          component: Checkout
+        },
+        {
+          path: 'pay',
+          name: 'pay',
+          component: PayIndex,
+        },
       ]
     },
     {
@@ -56,9 +62,9 @@ const router = createRouter({
     },
   ],
   // 路由滚动行为定制
-  scrollBehavior(){
+  scrollBehavior() {
     return {
-      top:0,
+      top: 0,
     }
   }
 })

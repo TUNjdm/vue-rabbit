@@ -3,7 +3,7 @@ import { createPinia } from 'pinia'
 
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
 import App from './App.vue'
-import router from './router'
+import router from './router/router';
 
 // 引入初始化样式
 import '@/styles/common.scss'
