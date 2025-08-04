@@ -68,7 +68,7 @@ const router = createRouter({
           component: MenberIndex,
           children: [
             {
-              path: 'user',
+              path: '',
               name: 'user',
               component: UserInfo
             },
